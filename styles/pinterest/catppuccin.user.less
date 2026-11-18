@@ -66,6 +66,13 @@
 
     /* Pins */
     --sema-color-background-primary: @accent;
+    // primary buttons ("Log in", "Sign up") sit on the accent, so they need dark text
+    --comp-button-color-text-primary-default: @base;
+    --comp-button-color-icon-primary-default: @base;
+    // "light" surfaces: cards over images and light buttons ("See what's new")
+    --sema-color-background-light: if(@flavor = latte, @base, @surface0);
+    --sema-color-hover-background-light: @surface1;
+    --sema-color-pressed-background-light: @surface2;
     --sema-color-hover-background-primary: darken(@accent, 5%);
     --sema-color-background-wash-light: @base;
     --sema-color-pressed-background-primary: darken(@accent, 5%);
@@ -262,6 +269,18 @@
 
     /* Toasts */
     --comp-toast-color-background-default: @overlay2;
+
+    /* Landing page (logged out); section colors are set inline */
+    .section[style*="background"] {
+      background: @base !important;
+    }
+    .unauth-homepage-brand-module,
+    [style*="linear-gradient(rgb(246, 246, 243)"] {
+      background: none !important;
+    }
+    [style*="color: var(--base-color-grayscale-300)"] {
+      color: @subtext0 !important; // pin counts on the hero board card
+    }
 
     /* SaveButton */
     [data-test-id="SaveButton"] > [class^="SaveButton"] {
