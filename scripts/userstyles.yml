@@ -76,6 +76,7 @@ collaborators:
   - &TheAnonymousCrusher TheAnonymousCrusher
   - &42willow 42willow
   - &Papweer Papweer
+  - &FarizInk FarizInk
 
 userstyles:
   advent-of-code:
@@ -980,6 +981,13 @@ userstyles:
     icon: twitter
     note: Set Twitter's built-in theme to **Lights out** with the blue accent.
     current-maintainers: [*watatomo]
+  unsplash:
+    name: Unsplash
+    link: https://unsplash.com
+    categories: [photo_and_video]
+    icon: unsplash
+    color: text
+    current-maintainers: [*FarizInk]
   vercel:
     name: Vercel
     link: https://vercel.com

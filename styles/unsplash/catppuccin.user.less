@@ -1,0 +1,255 @@
+/* ==UserStyle==
+@name Unsplash Catppuccin
+@namespace github.com/catppuccin/userstyles/styles/unsplash
+@homepageURL https://github.com/catppuccin/userstyles/tree/main/styles/unsplash
+@version 2000.01.01
+@updateURL https://github.com/catppuccin/userstyles/raw/main/styles/unsplash/catppuccin.user.less
+@supportURL https://github.com/catppuccin/userstyles/issues?q=is%3Aopen+is%3Aissue+label%3Aunsplash
+@description Soothing pastel theme for Unsplash
+@author Catppuccin
+@license MIT
+
+@preprocessor less
+@var select lightFlavor "Light Flavor" ["latte:Latte*", "frappe:Frappé", "macchiato:Macchiato", "mocha:Mocha"]
+@var select darkFlavor "Dark Flavor" ["latte:Latte", "frappe:Frappé", "macchiato:Macchiato", "mocha:Mocha*"]
+@var select accentColor "Accent" ["rosewater:Rosewater", "flamingo:Flamingo", "pink:Pink", "mauve:Mauve*", "red:Red", "maroon:Maroon", "peach:Peach", "yellow:Yellow", "green:Green", "teal:Teal", "blue:Blue", "sapphire:Sapphire", "sky:Sky", "lavender:Lavender", "subtext0:Gray"]
+==/UserStyle== */
+
+@import "https://userstyles.catppuccin.com/lib/std/v1.less";
+
+@-moz-document domain("unsplash.com") {
+  :root {
+    @media (prefers-color-scheme: light) {
+      #catppuccin(@lightFlavor);
+    }
+    @media (prefers-color-scheme: dark) {
+      #catppuccin(@darkFlavor);
+    }
+  }
+
+  #catppuccin(@flavor) {
+    #lib.palette();
+    #lib.defaults();
+
+    /* Unsplash draws some UI as light text on a dark surface no matter the
+       page theme: overlays on top of photos, promo cards, and toasts. Those
+       stay dark in every flavor, Latte included. */
+    @on-dark-text: if(@flavor = latte, @base, @text);
+    @on-dark-subtext: if(@flavor = latte, @crust, @subtext1);
+    @on-dark-dim: if(@flavor = latte, @surface1, @subtext0);
+    @on-dark-base: if(@flavor = latte, @text, @crust);
+    .on-dark() {
+      --color-white: @on-dark-text;
+      --color-black: @on-dark-base;
+      --color-gray-400: @on-dark-subtext;
+      --color-gray-700: @on-dark-dim;
+      --color-separator: fade(@on-dark-text, 20%);
+      --button-primary-background-color: @on-dark-text;
+      --button-primary-background-color-hover: @on-dark-subtext;
+      --button-primary-text-color: @on-dark-base;
+    }
+
+    /* Unsplash has no dark mode, so the whole palette is remapped. */
+    --color-white: @base;
+    --color-black: @text;
+    --color-gray-100: @mantle;
+    --color-gray-200: @surface0;
+    --color-gray-400: @surface2;
+    --color-gray-600: @overlay1;
+    --color-gray-700: @subtext0;
+    --color-gray-800: @subtext1;
+    --color-blue: @accent;
+    --color-blue-dark: darken(@accent, 5%);
+    --color-green: @green;
+    --color-green-dark: darken(@green, 5%);
+    --color-pink: @pink;
+    --color-pink-dark: darken(@pink, 5%);
+    --color-red: @red;
+    --color-red-dark: darken(@red, 5%);
+    --color-border-opacity: @surface0;
+    --color-backdrop-bg: fade(@crust, 60%);
+    --placeholder-background-color: @surface0;
+    --color-facebook: @blue;
+    --color-pinterest: @red;
+    --color-xitter: @text;
+
+    background-color: @base;
+    color: @text;
+
+    .light {
+      --button-primary-background-color: @accent;
+      --button-primary-background-color-hover: lighten(@accent, 5%);
+      --button-primary-text-color: @base;
+    }
+
+    .dark,
+    [class*="Toast-"]:not([data-type="error"]),
+    [class*="bentoSectionContent-"] {
+      .on-dark();
+    }
+
+    /* Inline SVG icons hardcode the default text color */
+    path:is([fill="#111"], [fill="#111111"], [fill="black"]) {
+      fill: @text;
+    }
+
+    /* "New" badges */
+    [class*="overhangingBadge-"] {
+      color: @base;
+    }
+
+    /* Like and "add to collection" buttons on photo hover */
+    [class*="overlayInteractive-"] {
+      background-color: fade(@base, 96%);
+    }
+
+    /* Fade-out edges of horizontally scrolling lists */
+    [class*="wrapperLeftFadeOut-"]::before {
+      background-image: linear-gradient(
+        270deg,
+        fade(@base, 0%) 0%,
+        @base 90%,
+        @base 100%
+      );
+    }
+    [class*="wrapperRightFadeOut-"]::after {
+      background-image: linear-gradient(
+        90deg,
+        fade(@base, 0%) 0%,
+        @base 90%,
+        @base 100%
+      );
+    }
+    [class*="imgContainer-"]::after {
+      @media (max-width: 767px) {
+        background-image: linear-gradient(fade(@base, 0%), @base);
+      }
+    }
+
+    /* Search bar */
+    [data-testid$="-search-form-form"]:hover:not(:focus-within) {
+      background-color: @surface1;
+      border-color: @surface1;
+    }
+    [class*="buttonDivider-"] {
+      background-color: @surface1;
+    }
+    /* "Search within user/collection" chip */
+    [class*="thumbnailContainer-"] {
+      background-image: linear-gradient(@mantle, @crust);
+    }
+
+    /* Menus */
+    [class*="iconLight-"],
+    [class*="localizationIcon-"] {
+      fill: @overlay1;
+    }
+    [class*="separator-"] {
+      background-color: @surface1;
+    }
+    [class*="subscriberPlusIcon-"] {
+      fill: @text;
+    }
+
+    /* Tooltips are inverted (`--color-black` background) */
+    [class*="tooltipLabel-"] {
+      color: fade(@base, 70%);
+    }
+
+    /* Photo stats chart */
+    [class*="line-"][class*="lineDotted-"],
+    [class*="line-"][class*="lineBorder-"] {
+      stroke: @surface1;
+    }
+    [class*="barWrapper-"] {
+      [class*="bar-"] {
+        fill: fade(@green, 60%);
+      }
+      &:hover [class*="bar-"] {
+        fill: @green;
+      }
+    }
+    [class*="hoverRectWrapper-"] [class*="circle-"] {
+      fill: @green;
+    }
+
+    [class*="controlsContainer-"] {
+      border-color: @surface1;
+    }
+    [class*="bookmarksCounterImageContainer-"] {
+      box-shadow: 0 0 0 2px @base;
+    }
+    [class*="hiddenFromProfileOverlay-"] {
+      background-color: fade(@base, 80%);
+    }
+    [class*="placeholderContainer-"] {
+      background-color: fade(@base, 60%);
+    }
+    [class*="errorBox-"] {
+      background-color: fade(@red, 15%);
+    }
+    [class*="highlightedDiscount-"] {
+      color: @pink;
+    }
+    [class*="plusIconBackground-"] {
+      background-color: @accent;
+    }
+    [class*="modalLink-"]:is(:hover, :focus-within) [class*="plusIconBackground-"] {
+      background-color: darken(@accent, 5%);
+    }
+    [class*="bookmarked-"] {
+      fill: @yellow;
+    }
+
+    /* Photo tags */
+    [class*="tagsContainer-"] [class*="content-"]:hover {
+      background-color: @surface1;
+    }
+
+    /* Login page */
+    [class*="joinBox-"] {
+      background-color: @mantle;
+    }
+
+    /* Unsplash+ page */
+    [class*="faqSection-"] {
+      background-color: @mantle;
+    }
+    [class*="limitedDealPill-"] {
+      background-color: fade(@green, 15%);
+    }
+    [class*="bentoSectionContentDImg-"] {
+      path[fill="#fff"] {
+        fill: @surface0;
+      }
+      path[fill="#AAA"] {
+        fill: @overlay1;
+      }
+      path[stroke="#AAA"] {
+        stroke: @overlay1;
+      }
+    }
+
+    /* About page browser mockup */
+    [class*="browser-"] {
+      --strip: @mantle;
+      --tab-hover: fade(@text, 5%);
+      --tab-press: fade(@text, 8%);
+      --tab-text: @subtext1;
+      --separator: @surface0;
+      --border: @surface0;
+
+      [class*="bar-"] {
+        background-color: @surface0;
+      }
+    }
+
+    /* Community page */
+    [class*="contributorsSection-"] {
+      background: linear-gradient(fade(@mantle, 0%) 0%, @mantle 100%);
+    }
+    [class^="ring-"][style*="border-color"] {
+      border-color: @surface0 !important;
+    }
+  }
+}
