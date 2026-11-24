@@ -110,6 +110,18 @@
       --sema-color-text-inverse: @text;
       --sema-color-icon-inverse: @text;
     }
+    // "Transparent inverse" buttons sit on images (the board picker on pin
+    // hover) and their label uses the always-light text color, so keep the
+    // selected state a dark pill instead of the accent.
+    @on-image-bg: if(@flavor = latte, @text, @crust);
+    @on-image-text: if(@flavor = latte, @base, @text);
+    --comp-button-color-background-transparent-inverse-selected: fade(@on-image-bg, 80%);
+    --comp-button-color-hover-background-transparent-inverse-selected: @on-image-bg;
+    --comp-button-color-pressed-background-transparent-inverse-selected: @on-image-bg;
+    --comp-button-color-icon-transparent-inverse-default: @on-image-text;
+    --comp-button-color-icon-transparent-inverse-selected: @on-image-text;
+    --comp-button-color-text-transparent-inverse-default: @on-image-text;
+    --comp-button-color-text-transparent-inverse-selected: @on-image-text;
 
     --sema-color-text-error: @red;
     --sema-color-background-error-default: @maroon;
