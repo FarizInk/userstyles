@@ -47,6 +47,7 @@
     --sema-color-hover-background-tertiary: @overlay2;
     --sema-color-text-default: @text;
     --sema-color-text-subtle: @subtext1;
+    --sema-color-text-neutral: @subtext0; // section labels in the account switcher
     --sema-color-text-link: @accent; // links / messages username
     --sema-color-text-dark: @text; // commenter username / bar pills text
     --sema-color-text-light: if(
@@ -69,6 +70,15 @@
     // primary buttons ("Log in", "Sign up") sit on the accent, so they need dark text
     --comp-button-color-text-primary-default: @base;
     --comp-button-color-icon-primary-default: @base;
+    // "Save" on pin hover and shopping buttons also sit on the accent
+    --comp-buttontoggle-color-text-save-enabled-deselected: @base;
+    --comp-buttontoggle-color-hover-text-save-enabled-deselected: @base;
+    --comp-buttontoggle-color-pressed-text-save-enabled-deselected: @base;
+    --comp-buttontoggle-color-icon-save-enabled-deselected: @base;
+    --comp-buttontoggle-color-hover-icon-save-enabled-deselected: @base;
+    --comp-buttontoggle-color-pressed-icon-save-enabled-deselected: @base;
+    --comp-button-color-text-shopping-default: @base;
+    --comp-button-color-icon-shopping-default: @base;
     // "light" surfaces: cards over images and light buttons ("See what's new")
     --sema-color-background-light: if(@flavor = latte, @base, @surface0);
     --sema-color-hover-background-light: @surface1;
@@ -208,6 +218,10 @@
     --sema-color-text-disabled: @overlay2; // disabled "Reset"/"Save" buttons
 
     /* Messages */
+    // "New message" icon sits on the accent
+    [data-test-id="compose-new-message-button"] {
+      --sema-color-icon-light: @base;
+    }
     textarea#messageDraft {
       background-color: transparent !important;
       color: @subtext1;
@@ -270,6 +284,101 @@
 
     /* Toasts */
     --comp-toast-color-background-default: @overlay2;
+
+    /* Translucent washes. Pinterest layers them over images (the search
+       guide bar, the account switcher) and uses them for icon button hovers. */
+    .wash(@a) {
+      @bg: fade(@base, @a);
+      @hover: fade(@surface0, @a);
+      @pressed: fade(@surface1, @a);
+      --sema-color-background-elevated-wash-@{a}-default: @bg;
+      --sema-color-background-elevated-wash-@{a}-light: @bg;
+      --sema-color-hover-background-elevated-wash-@{a}-default: @hover;
+      --sema-color-hover-background-elevated-wash-@{a}-light: @hover;
+      --sema-color-pressed-background-elevated-wash-@{a}-default: @pressed;
+      --sema-color-pressed-background-elevated-wash-@{a}-light: @pressed;
+    }
+    .wash(50);
+    .wash(60);
+    .wash(70);
+    .wash(80);
+    .wash(90);
+    .wash(95);
+    --sema-color-background-wash-50-default: fade(@base, 50%);
+    --sema-color-background-wash-50-light: fade(@base, 50%);
+    --sema-color-hover-background-wash-50-default: fade(@surface0, 50%);
+    --sema-color-hover-background-wash-50-light: fade(@surface0, 50%);
+    --sema-color-pressed-background-wash-50-default: fade(@surface1, 50%);
+    --sema-color-pressed-background-wash-50-light: fade(@surface1, 50%);
+    --sema-color-pressed-background-wash-70-default: fade(@surface1, 70%);
+    --sema-color-pressed-background-wash-70-light: fade(@surface1, 70%);
+
+    /* Opaque surfaces: popovers, sheets and the gradient behind pin titles */
+    --sema-color-background-elevated-opaque-default: @mantle;
+    --sema-color-hover-background-elevated-opaque-default: @surface0;
+    --sema-color-hover-background-elevated-opaque-secondary: @surface1;
+    --sema-color-hover-background-elevated-opaque-subtle: @surface0;
+    --sema-color-pressed-background-elevated-opaque-subtle: @surface1;
+    --sema-color-background-elevated-opaque-tertiary: @surface2;
+    --sema-color-pressed-background-elevated-opaque-tertiary: @overlay0;
+    --sema-color-background-elevated-scrim-opaque-gradient-from: fade(@base, 90%);
+    --sema-color-background-elevated-scrim-opaque-gradient-to: @base;
+    --sema-color-hover-background-elevated-scrim-opaque-gradient-from: fade(@surface0, 90%);
+    --sema-color-hover-background-elevated-scrim-opaque-gradient-to: @surface0;
+    --sema-color-pressed-background-elevated-scrim-opaque-gradient-from: fade(@surface1, 90%);
+    --sema-color-pressed-background-elevated-scrim-opaque-gradient-to: @surface1;
+    --sema-color-background-subtle: @mantle;
+    --sema-color-hover-background-subtle: @surface0;
+    --sema-color-pressed-background-subtle: @surface1;
+    --comp-skeleton-color-background-highlight: @surface0;
+
+    /* Status colors (badges such as "New", banners and callouts) */
+    --sema-color-text-success: @green;
+    --sema-color-icon-success: @green;
+    --sema-color-text-warning: @peach;
+    --sema-color-icon-warning: @peach;
+    --sema-color-text-info: @blue;
+    --sema-color-icon-info: @blue;
+    --sema-color-text-recommendation: @pink;
+    --sema-color-icon-recommendation: @pink;
+    --sema-color-text-performance-plus: @mauve;
+    --sema-color-icon-performance-plus: @mauve;
+    --sema-color-icon-link: @accent;
+    .status-weak(@n, @color) {
+      --sema-color-background-@{n}-weak: fade(@color, 15%);
+      --sema-color-hover-background-@{n}-weak: fade(@color, 25%);
+      --sema-color-pressed-background-@{n}-weak: fade(@color, 35%);
+    }
+    .status-weak(error, @red);
+    .status-weak(info, @blue);
+    .status-weak(success, @green);
+    .status-weak(warning, @peach);
+    .status-weak(performance-plus, @mauve);
+    .status-weak(recommendation, @pink);
+    .status-weak(neutral, @overlay2);
+
+    /* Search guide pills under the search bar keep their default text color,
+       so tone the pastel backgrounds down instead of flipping the text. */
+    .searchguide(@n, @color) {
+      // w = weak, s = strong; h = hover, p = pressed
+      @w: mix(@color, @base, 20%);
+      @wh: mix(@color, @base, 28%);
+      @wp: mix(@color, @base, 36%);
+      @s: mix(@color, @base, 32%);
+      @sh: mix(@color, @base, 40%);
+      @sp: mix(@color, @base, 48%);
+      --comp-searchguide-color-background-@{n}-weak-default: @w;
+      --comp-searchguide-color-hover-background-@{n}-weak-default: @wh;
+      --comp-searchguide-color-pressed-background-@{n}-weak-default: @wp;
+      --comp-searchguide-color-background-@{n}-strong-default: @s;
+      --comp-searchguide-color-hover-background-@{n}-strong-default: @sh;
+      --comp-searchguide-color-pressed-background-@{n}-strong-default: @sp;
+    }
+    .searchguide(blue, @blue);
+    .searchguide(green, @green);
+    .searchguide(orange, @peach);
+    .searchguide(purple, @mauve);
+    .searchguide(red, @red);
 
     /* Landing page (logged out); section colors are set inline */
     .section[style*="background"] {
